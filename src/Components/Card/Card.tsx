@@ -1,65 +1,96 @@
 import {
   Box,
-  Center,
   Heading,
   Text,
   Stack,
-  useColorModeValue,
   Image,
   HStack,
+  Card,
+  CardBody,
+  CardFooter,
+  useMultiStyleConfig,
 } from '@chakra-ui/react';
+import { connected } from 'process';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchPostData, fetchUploadImage, Post } from '../../Redux/PostSlice';
+import { AppDispatch } from '../../Redux/store';
 
-export default function PostCard() {
+interface Props {
+  post: Post;
+}
+
+const PostCard: React.FC<Props> = (props) => {
+  const { post } = props;
+  const styles = useMultiStyleConfig('Card', { size: 'md', variant: 'custom' });
+
+  // const dispatch = useDispatch<AppDispatch>();
+
+  // useEffect(() => {
+  //   const current_image = post.img_url;
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const imageUrl = await dispatch(fetchUploadImage(current_image));
+  //       console.log(imageUrl);
+  //     } catch (error) {
+  //       console.error('Error fetching image:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [dispatch, post.img_url]);
+
   return (
-    <Center py={5}>
-      <Box
-        maxW={'445px'}
-        w={'full'}
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        bg={useColorModeValue('white', 'gray.900')}
-        boxShadow={'2xl'}
-        rounded={'md'}
-        p={5}
-        overflow={'hidden'}
-      >
+    <Card sx={styles.container}>
+      <CardBody sx={styles.body}>
         <Box bg={'gray.100'} mt={-5} mx={-5} mb={5} pos={'relative'}>
-          <Image src="./example.png" alt="Example" />
-          <HStack>
+          <Image
+            src={`${process.env.PUBLIC_URL}/avatarLogo.png`}
+            alt="card_image"
+            objectFit="cover"
+            height="72px"
+            width="285px"
+          />
+          <HStack bgColor={'transparent'}>
             <Text
-              color={'green.500'}
+              color={'white'}
               textTransform={'uppercase'}
-              fontSize={'sm'}
+              fontSize={'xs'}
               letterSpacing={1.1}
+              bg={'transparent'}
             >
-              Data
+              {post.created_at}
             </Text>
             <Text
-              color={'green.500'}
+              color={'white'}
               textTransform={'uppercase'}
-              fontSize={'sm'}
+              fontSize={'xs'}
               letterSpacing={1.1}
+              bg={'transparent'}
             >
-              Category
+              {post.category.name}
             </Text>
           </HStack>
         </Box>
-        <Stack>
-          <Heading
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            color={useColorModeValue('gray.700', 'white')}
-            fontSize={'2xl'}
-            fontFamily={'body'}
-          >
-            Boost your conversion rate
-          </Heading>
-          <Text color={'gray.500'}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum.
-          </Text>
-        </Stack>
-      </Box>
-    </Center>
+        <CardFooter sx={styles.footer}>
+          <Stack spacing="1">
+            <Heading
+              fontSize={'24px'}
+              fontWeight="bold"
+              letterSpacing="0"
+              lineHeight={'29px'}
+            >
+              {post.title}
+            </Heading>
+            <Text fontSize={'12px'} letterSpacing="0" lineHeight={'19px'}>
+              {post.content}
+            </Text>
+          </Stack>
+        </CardFooter>
+      </CardBody>
+    </Card>
   );
-}
+};
+
+export default PostCard;

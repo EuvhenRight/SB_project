@@ -1,63 +1,65 @@
-import { Container, SimpleGrid } from '@chakra-ui/react';
+import { Box, Container, SimpleGrid } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import PostCard from '../../Components/Card/Card';
-import Category from '../../Components/Category/Category';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../Redux/store';
+import { fetchPostData, PaginationInfo } from '../../Redux/PostSlice';
+import Pagination from '../../Components/Pagination/Pagination';
 
-type Category = {
-  id: number;
-  name: string;
-};
+const Blog: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { data } = useSelector((state: RootState) => state.posts);
 
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  img_url: string;
-  category: Category;
-  category_id: number;
-  category_name: string;
-  created_at: string;
-  updated_at: string;
-}
+  const [currentPage, setCurrentPage] = useState(1);
 
-const Blog: React.FC<Post> = () => {
-  const [data, setData] = useState(null);
+  const paginationInfo: PaginationInfo = {
+    current_page: currentPage ?? 1,
+    data: data?.data ?? [],
+    last_page: data?.last_page ?? 0,
+    next_page_url: data?.next_page_url ?? null,
+    prev_page_url: data?.prev_page_url ?? null,
+    total: data?.total ?? 0,
+    first_page_url: data?.first_page_url ?? '',
+    last_page_url: data?.last_page_url ?? '',
+    from: data?.from ?? 0,
+    to: data?.to ?? 0,
+    links: data?.links ?? [],
+    path: data?.path ?? '',
+    per_page: data?.per_page ?? '',
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+
+    // Dispatch the action with the new page number
+    dispatch(fetchPostData(pageNumber));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiKey = 'token'; // Replace with your actual API key name
-        const apiKeyValue = 'pj11daaQRz7zUIH56B9Z'; // Replace with your actual API key value
-        const apiUrl =
-          'https://frontend-case-api.sbdev.nl/api/posts?page=1&perPage=10&sortBy=title&sortDirection=asc&searchPhrase=test ber&categoryId=1'; // Replace with your API endpoint
-
-        const response = await fetch(apiUrl, {
-          headers: {
-            [apiKey]: apiKeyValue,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-        setData(result);
+        await dispatch(fetchPostData(1));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
-    <Container as="main" maxW="container.xl" mt="4em">
-      <Category />
+    <Container as="main" maxW="container.lg" mt="4em">
       <SimpleGrid columns={[1, 2, 4]} row={2} spacing={10}>
-        <PostCard />
+        {data?.data.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
       </SimpleGrid>
+      <Box>
+        <Pagination
+          paginationInfo={paginationInfo}
+          onPageChange={handlePageChange}
+        />
+      </Box>
     </Container>
   );
 };
