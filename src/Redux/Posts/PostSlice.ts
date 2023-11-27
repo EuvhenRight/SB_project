@@ -1,69 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  PaginationInfo,
+  Post,
+  Category,
+  FormValues,
+  PostsState,
+} from '../types';
 import axios from 'axios';
 import { AxiosError } from 'axios';
-
-export interface myFormValues {
-  title: string;
-  content: string;
-  category_id: string;
-  image: File | null;
-}
-
-export interface Category {
-  id: number;
-  name: string;
-  created_at: string | null;
-  updated_at: string | null;
-}
-
-export interface Post {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  title: string;
-  content: string;
-  category_id: number;
-  img_url: string;
-  category: Category;
-}
-
-export interface PaginationLink {
-  url: string | null;
-  label: string;
-  active: boolean;
-}
-
-export interface PaginationInfo {
-  current_page: number;
-  data: Post[];
-  first_page_url: string;
-  from: number;
-  last_page: number;
-  last_page_url: string;
-  links: PaginationLink[];
-  next_page_url: string | null;
-  path: string;
-  per_page: string;
-  prev_page_url: string | null;
-  to: number;
-  total: number;
-}
-
-export interface PostsState {
-  data: PaginationInfo | null;
-  categories: Category[] | null;
-  newPost: Post | null;
-  image: Post | null;
-  status: 'isLoading' | 'isSuccess' | 'isError';
-}
 
 const apiKey: string = 'token';
 const apiKeyValue: string = 'pj11daaQRz7zUIH56B9Z';
 
-export const fetchPostData = createAsyncThunk<PaginationInfo, number>(
+export const fetchPostData = createAsyncThunk<PaginationInfo>(
   'get/fetchAllPostData',
-  async (page) => {
-    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=${page}&perPage=4&sortBy=title&sortDirection=asc&searchPhrase=test ber&categoryId=1`;
+  async () => {
+    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=1&perPage=4&sortBy=title&sortDirection=asc&searchPhrase=test ber&categoryId=1`;
 
     try {
       const response = await axios.get<PaginationInfo>(apiUrl, {
@@ -100,7 +52,7 @@ export const fetchCategoryData = createAsyncThunk<Category[]>(
   }
 );
 
-export const fetchNewPostData = createAsyncThunk<Post, myFormValues>(
+export const fetchNewPostData = createAsyncThunk<Post, FormValues>(
   'post/fetchNewPostData',
   async (formValues, { rejectWithValue }) => {
     const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts`;

@@ -9,12 +9,15 @@ import {
   CardBody,
   CardFooter,
   useMultiStyleConfig,
+  Flex,
 } from '@chakra-ui/react';
 import { connected } from 'process';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchPostData, fetchUploadImage, Post } from '../../Redux/PostSlice';
+import { fetchPostData, fetchUploadImage } from '../../Redux/Posts/PostSlice';
 import { AppDispatch } from '../../Redux/store';
+import { Post } from '../../Redux/types';
+import { format, parseISO } from 'date-fns';
 
 interface Props {
   post: Post;
@@ -23,6 +26,9 @@ interface Props {
 const PostCard: React.FC<Props> = (props) => {
   const { post } = props;
   const styles = useMultiStyleConfig('Card', { size: 'md', variant: 'custom' });
+
+  const timestamp = parseISO(post.created_at);
+  const formattedDate = format(timestamp, 'dd-MM-yyyy');
 
   // const dispatch = useDispatch<AppDispatch>();
 
@@ -43,51 +49,35 @@ const PostCard: React.FC<Props> = (props) => {
 
   return (
     <Card sx={styles.container}>
-      <CardBody sx={styles.body}>
-        <Box bg={'gray.100'} mt={-5} mx={-5} mb={5} pos={'relative'}>
-          <Image
-            src={`${process.env.PUBLIC_URL}/avatarLogo.png`}
-            alt="card_image"
-            objectFit="cover"
-            height="72px"
-            width="285px"
-          />
-          <HStack bgColor={'transparent'}>
-            <Text
-              color={'white'}
-              textTransform={'uppercase'}
-              fontSize={'xs'}
-              letterSpacing={1.1}
-              bg={'transparent'}
-            >
-              {post.created_at}
-            </Text>
-            <Text
-              color={'white'}
-              textTransform={'uppercase'}
-              fontSize={'xs'}
-              letterSpacing={1.1}
-              bg={'transparent'}
-            >
-              {post.category.name}
-            </Text>
-          </HStack>
-        </Box>
-        <CardFooter sx={styles.footer}>
-          <Stack spacing="1">
-            <Heading
-              fontSize={'24px'}
-              fontWeight="bold"
-              letterSpacing="0"
-              lineHeight={'29px'}
-            >
-              {post.title}
-            </Heading>
-            <Text fontSize={'12px'} letterSpacing="0" lineHeight={'19px'}>
-              {post.content}
-            </Text>
-          </Stack>
-        </CardFooter>
+      <CardFooter
+        sx={styles.footer}
+        bgImage={`${process.env.PUBLIC_URL}/avatarLogo.png`}
+        bgPosition="center"
+        bgRepeat="no-repeat"
+      >
+        <Flex w="100%" justifyContent={'space-between'} alignItems={'flex-end'}>
+          <Text color={'white'} fontStyle="italic" fontSize={'xs'}>
+            {formattedDate}
+          </Text>
+          <Text color={'white'} fontStyle="italic" fontSize={'xs'}>
+            {post.category.name}
+          </Text>
+        </Flex>
+      </CardFooter>
+      <CardBody sx={styles.body} textOverflow="ellipsis">
+        <Stack spacing="1">
+          <Heading
+            fontSize={'24px'}
+            fontWeight="bold"
+            letterSpacing="0"
+            lineHeight={'29px'}
+          >
+            {post.title}
+          </Heading>
+          <Text fontSize={'12px'} letterSpacing="0" lineHeight={'19px'}>
+            {post.content}
+          </Text>
+        </Stack>
       </CardBody>
     </Card>
   );

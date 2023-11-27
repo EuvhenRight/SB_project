@@ -7,22 +7,19 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const postCard = definePartsStyle({
   container: {
     height: '217px',
-    width: '285px',
+    width: '261px',
+    borderRadius: 'none',
     backgroundColor: 'white',
     _dark: {
       backgroundColor: 'gray.600',
     },
   },
-  header: {
-    paddingBottom: '2px',
-  },
-  body: {
-    height: '72px',
-    width: '285px',
-  },
+  header: {},
+  body: { overflowY: 'scroll' },
   footer: {
-    padding: 0,
-    margin: 0,
+    p: 4,
+    m: 0,
+    height: '72px',
   },
 });
 

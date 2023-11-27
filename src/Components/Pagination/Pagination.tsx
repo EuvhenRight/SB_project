@@ -1,20 +1,22 @@
-import { PaginationInfo } from '../../Redux/PostSlice';
 import { Paginate } from 'react-paginate-chakra-ui';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import { PaginationInfo } from '../../Redux/types';
 
 interface PaginationProps {
+  pageNumber: number;
   paginationInfo: PaginationInfo;
   onPageChange: (pageNumber: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
+  pageNumber,
   paginationInfo,
   onPageChange,
 }) => {
-  const { current_page, total } = paginationInfo;
+  const { total } = paginationInfo;
   const [page, setPage] = useState(1);
-  const adjustedCurrentPage = current_page - 1;
+  const adjustedCurrentPage = pageNumber - 1;
 
   const togglePage = (page: number) => {
     setPage(page);
@@ -30,7 +32,7 @@ const Pagination: React.FC<PaginationProps> = ({
       variant="outline"
       selectedVariant="solid"
       count={total}
-      pageSize={8}
+      pageSize={4}
       previousIcon={<ChevronLeftIcon />}
       nextIcon={<ChevronRightIcon />}
       onPageChange={togglePage}

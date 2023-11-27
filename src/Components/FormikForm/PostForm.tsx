@@ -20,14 +20,13 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../Redux/store';
-import {
-  fetchCategoryData,
-  Category,
-  fetchNewPostData,
-  myFormValues,
-} from '../../Redux/PostSlice';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { MdOutlinePhotoCamera } from 'react-icons/md';
+import { Category, FormValues } from '../../Redux/types';
+import {
+  fetchCategoryData,
+  fetchNewPostData,
+} from '../../Redux/Posts/PostSlice';
 
 const validate = (value: string, fieldName: string) => {
   let error: string | undefined;
@@ -72,7 +71,7 @@ const PostForm: React.FC = () => {
     fetchData();
   }, [dispatch]);
 
-  const initialValues: myFormValues = {
+  const initialValues: FormValues = {
     title: '',
     content: '',
     category_id: '',
@@ -80,8 +79,8 @@ const PostForm: React.FC = () => {
   };
 
   const onSubmit = async (
-    values: myFormValues,
-    actions: FormikHelpers<myFormValues>
+    values: FormValues,
+    actions: FormikHelpers<FormValues>
   ) => {
     try {
       const formData = new FormData();
@@ -93,7 +92,7 @@ const PostForm: React.FC = () => {
         console.log(values.image, 'values.image');
       }
 
-      const postPayload: myFormValues = {
+      const postPayload: FormValues = {
         title: values.title,
         content: values.content,
         category_id: values.category_id,
@@ -111,7 +110,7 @@ const PostForm: React.FC = () => {
 
   const handleSelectImage = (
     e: ChangeEvent<HTMLInputElement>,
-    form: FormikProps<myFormValues>
+    form: FormikProps<FormValues>
   ) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {

@@ -5,13 +5,13 @@ import {
   useBreakpointValue,
   useColorMode,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { memo } from 'react';
 import PostForm from '../../Components/FormikForm/PostForm';
 import PostContent from '../../Components/PostContent/PostContent';
 
-const Posts = () => {
+const Posts: React.FC = memo(() => {
   const { colorMode } = useColorMode();
-  const isMobile = useBreakpointValue({ base: true, lg: true });
+  const isMobile = useBreakpointValue({ base: true, lg: false });
   return (
     <Container as="main" maxW="container.lg" my={16}>
       <Grid
@@ -33,13 +33,14 @@ const Posts = () => {
           <PostForm />
         </GridItem>
         <GridItem
-          colSpan={isMobile ? 1 : 2}
+          colSpan={isMobile ? 1 : 1}
+          rowSpan={isMobile ? 1 : 2}
           as={'section'}
           p={6}
           bgColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
           display={'flex'}
           justifyContent={'center'}
-          alignItems={'center'}
+          alignItems={'flex-end'}
           area="post"
         >
           <PostContent />
@@ -47,6 +48,6 @@ const Posts = () => {
       </Grid>
     </Container>
   );
-};
+});
 
 export default Posts;

@@ -1,7 +1,7 @@
 import { Box, Container, Heading, Highlight } from '@chakra-ui/react';
 import React from 'react';
 
-export default function Home() {
+const Welcome: React.FC = () => {
   return (
     <Container as="main" maxW="container.xl">
       <Box
@@ -28,4 +28,6 @@ export default function Home() {
       </Box>
     </Container>
   );
-}
+};
+
+export default Welcome;
