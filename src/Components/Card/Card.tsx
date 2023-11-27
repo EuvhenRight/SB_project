@@ -30,28 +30,28 @@ const PostCard: React.FC<Props> = (props) => {
   const timestamp = parseISO(post.created_at);
   const formattedDate = format(timestamp, 'dd-MM-yyyy');
 
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
-  // useEffect(() => {
-  //   const current_image = post.img_url;
+  useEffect(() => {
+    const current_image = post.img_url;
 
-  //   const fetchData = async () => {
-  //     try {
-  //       const imageUrl = await dispatch(fetchUploadImage(current_image));
-  //       console.log(imageUrl);
-  //     } catch (error) {
-  //       console.error('Error fetching image:', error);
-  //     }
-  //   };
+    const fetchData = async () => {
+      try {
+        const imageUrl = await dispatch(fetchUploadImage(current_image));
+        console.log(imageUrl);
+      } catch (error) {
+        console.error('Error fetching image:', error);
+      }
+    };
 
-  //   fetchData();
-  // }, [dispatch, post.img_url]);
+    fetchData();
+  }, [dispatch, post.img_url]);
 
   return (
     <Card sx={styles.container}>
       <CardFooter
         sx={styles.footer}
-        bgImage={`${process.env.PUBLIC_URL}/avatarLogo.png`}
+        bgImage={post.img_url}
         bgPosition="center"
         bgRepeat="no-repeat"
       >

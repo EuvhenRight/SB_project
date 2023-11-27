@@ -26,6 +26,7 @@ import { Category, FormValues } from '../../Redux/types';
 import {
   fetchCategoryData,
   fetchNewPostData,
+  fetchUploadImage,
 } from '../../Redux/Posts/PostSlice';
 
 const validate = (value: string, fieldName: string) => {
@@ -83,14 +84,13 @@ const PostForm: React.FC = () => {
     actions: FormikHelpers<FormValues>
   ) => {
     try {
-      const formData = new FormData();
-      formData.append('title', values.title);
-      formData.append('content', values.content);
-      formData.append('category_id', values.category_id);
-      if (values.image) {
-        formData.append('image', values.image, values.image.name);
-        console.log(values.image, 'values.image');
-      }
+      // const formData: FormValues = new FormData();
+      // formData.append('title', values.title);
+      // formData.append('content', values.content);
+      // formData.append('category_id', values.category_id);
+      // if (values.image) {
+      //   formData.append('image', values.image, values.image.name);
+      // }
 
       const postPayload: FormValues = {
         title: values.title,
@@ -98,7 +98,7 @@ const PostForm: React.FC = () => {
         category_id: values.category_id,
         image: values.image,
       };
-      console.log(postPayload);
+      console.log(values.image, 'values.image');
       dispatch(fetchNewPostData(postPayload));
       console.log('Post created successfully!');
     } catch (error) {
@@ -108,14 +108,19 @@ const PostForm: React.FC = () => {
     }
   };
 
-  const handleSelectImage = (
+  const handleSelectImage = async (
     e: ChangeEvent<HTMLInputElement>,
     form: FormikProps<FormValues>
   ) => {
     e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      form.setFieldValue('image', file);
+      try {
+        form.setFieldValue('image', file);
+        console.log(file, 'file');
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
   };
 

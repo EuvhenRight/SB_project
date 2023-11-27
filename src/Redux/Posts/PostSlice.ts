@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   PaginationInfo,
@@ -15,7 +16,7 @@ const apiKeyValue: string = 'pj11daaQRz7zUIH56B9Z';
 export const fetchPostData = createAsyncThunk<PaginationInfo>(
   'get/fetchAllPostData',
   async () => {
-    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=1&perPage=4&sortBy=title&sortDirection=asc&searchPhrase=test ber&categoryId=1`;
+    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=1&perPage=4&sortBy=title&sortDirection=asc&searchPhrase=yevhen&categoryId=1`;
 
     try {
       const response = await axios.get<PaginationInfo>(apiUrl, {
@@ -58,17 +59,12 @@ export const fetchNewPostData = createAsyncThunk<Post, FormValues>(
     const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts`;
 
     try {
-      const response = await axios.post<Post>(
-        apiUrl,
-        null, // Pass an empty body or adjust as needed
-        {
-          headers: {
-            [apiKey]: apiKeyValue,
-            'Content-type': 'multipart/form-data',
-          },
-          params: formValues, // Pass form values as query parameters
-        }
-      );
+      const response = await axios.post<Post>(apiUrl, formValues, {
+        headers: {
+          [apiKey]: apiKeyValue,
+          'Content-type': 'multipart/form-data',
+        },
+      });
 
       return response.data;
     } catch (error: any) {
@@ -79,9 +75,9 @@ export const fetchNewPostData = createAsyncThunk<Post, FormValues>(
 );
 
 export const fetchUploadImage = createAsyncThunk<Post, string>(
-  'get/fetchUploadImage',
-  async (imageUrl) => {
-    const apiUrl = `https://frontend-case-api.sbdev.nl/storage/${imageUrl}`;
+  'post/fetchUploadImage',
+  async (currentImage) => {
+    const apiUrl = `https://frontend-case-api.sbdev.nl/storage/${currentImage}`;
 
     try {
       const response = await axios.get<Post>(apiUrl, {
