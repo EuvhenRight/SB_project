@@ -5,13 +5,13 @@ import {
   SimpleGrid,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../Redux/store';
 import { fetchPostData } from '../../Redux/Posts/PostSlice';
 import PostCard from '../Card/Card';
 
-const PostContent = () => {
+const PostContent: React.FC = memo(() => {
   const dispatch = useDispatch<AppDispatch>();
   const { data } = useSelector((state: RootState) => state.posts);
   const isMobile = useBreakpointValue({ base: true, lg: false });
@@ -45,6 +45,6 @@ const PostContent = () => {
       </Button>
     </Flex>
   );
-};
+});
 
 export default PostContent;

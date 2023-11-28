@@ -9,6 +9,7 @@ import {
 } from '../types';
 import axios from 'axios';
 import { AxiosError } from 'axios';
+import { RootState } from '../store';
 
 const apiKey: string = 'token';
 const apiKeyValue: string = 'pj11daaQRz7zUIH56B9Z';
@@ -176,3 +177,8 @@ const PostSlice = createSlice({
 });
 
 export const PostReducer = PostSlice.reducer;
+
+export const selectPosts = (state: RootState) => state.posts;
+
+export const isSuccessSelector = (state: RootState) =>
+  state.posts.status === 'isSuccess';

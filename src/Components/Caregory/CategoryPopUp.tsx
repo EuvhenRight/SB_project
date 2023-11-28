@@ -26,6 +26,7 @@ const CategoryPopUp: React.FC<CategoriesProps> = ({ onChangeCategory }) => {
   }, [dispatch]);
   return (
     <Select
+      size="xs"
       placeholder="Category"
       onChange={(e) => onChangeCategory(Number(e.target.value))}
     >

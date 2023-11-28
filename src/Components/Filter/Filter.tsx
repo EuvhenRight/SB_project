@@ -1,29 +1,91 @@
 import { Select } from '@chakra-ui/react';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategoryData } from '../../Redux/Posts/PostSlice';
+import { RootState, useAppDispatch } from '../../Redux/store';
+import { Category } from '../../Redux/types';
 
-type FilterProps = {
-  onChangeDirection: (idx: string) => void;
-};
-
-type FilterPage = {
+type OptionType = {
+  id: number | string;
   name: string;
 };
 
-const FilterPopUp: React.FC<FilterProps> = memo(({ onChangeDirection }) => {
-  const data: FilterPage[] = [{ name: 'asc' }, { name: 'desc' }];
+type FilterProps = {
+  onChangeDirection: (idx: string) => void;
+  onChangePerPage: (perPage: number) => void;
+  onChangeCategory: (idx: number) => void;
+};
 
-  return (
-    <Select
-      placeholder="Per Page"
-      onChange={(e) => onChangeDirection(e.target.value)}
-    >
-      {data?.map((page) => (
-        <option key={page.name} value={page.name}>
-          {page.name}
-        </option>
-      ))}
-    </Select>
-  );
-});
+const FilterPopUp: React.FC<FilterProps> = memo(
+  ({ onChangeDirection, onChangePerPage, onChangeCategory }) => {
+    const perPageOptions: OptionType[] = [
+      { id: 4, name: '4' },
+      { id: 8, name: '8' },
+      { id: 12, name: '12' },
+    ];
+
+    const directionOptions: OptionType[] = [
+      { id: 'asc', name: 'Asc' },
+      { id: 'desc', name: 'Desc' },
+    ];
+
+    const categories = useSelector(
+      (state: RootState) => state.posts.categories
+    );
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          await dispatch(fetchCategoryData());
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
+    }, [dispatch]);
+
+    return (
+      <>
+        <Select
+          size="xs"
+          placeholder="Per Page"
+          onChange={(e) => onChangePerPage(Number(e.target.value))}
+          mr={2}
+        >
+          {perPageOptions.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
+        </Select>
+        <Select
+          mr={2}
+          size="xs"
+          placeholder="Direction"
+          onChange={(e) => onChangeDirection(e.target.value)}
+        >
+          {directionOptions.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
+        </Select>
+        <Select
+          size="xs"
+          placeholder="Category"
+          onChange={(e) => onChangeCategory(Number(e.target.value))}
+        >
+          {categories?.map((category: Category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </Select>
+      </>
+    );
+  }
+);
 
 export default FilterPopUp;

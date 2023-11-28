@@ -9,7 +9,7 @@ export const universalPostData = createAsyncThunk<PaginationInfo, filterValues>(
   'get/fetchAllPostData',
   async (params) => {
     const { page, perPage, sortBy, sortDirection, categoryId } = params;
-    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=${page}&perPage=${perPage}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchPhrase=yevhen&categoryId=${categoryId}`;
+    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=${page}&perPage=${perPage}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchPhrase=&categoryId=${categoryId}`;
 
     try {
       const response = await axios.get<PaginationInfo>(apiUrl, {

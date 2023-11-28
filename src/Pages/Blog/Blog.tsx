@@ -1,12 +1,17 @@
-import { Box, Container, SimpleGrid } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Container,
+  Flex,
+  SimpleGrid,
+  Spinner,
+} from '@chakra-ui/react';
 import React, { memo, useCallback, useEffect } from 'react';
 import PostCard from '../../Components/Card/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppDispatch } from '../../Redux/store';
 import { fetchPostData } from '../../Redux/Posts/PostSlice';
 import { PaginationInfo } from '../../Redux/types';
-import Pagination from '../../Components/Pagination/Pagination';
-import CategoryPopUp from '../../Components/Caregory/CategoryPopUp';
 import { universalPostData } from '../../Redux/Filter/AsyncAction';
 import {
   selectFilter,
@@ -15,13 +20,14 @@ import {
   setPerPage,
   setSortDirection,
 } from '../../Redux/Filter/FilterSlice';
-import PerPagePopUp from '../../Components/PerPage.ts/PerPage';
 import FilterPopUp from '../../Components/Filter/Filter';
+import Pagination from '../../Components/Pagination/PaginationPrime';
 
 const Blog: React.FC = memo(() => {
   const dispatch = useAppDispatch();
   const { sortBy, sortDirection, perPage, page, categoryId } =
     useSelector(selectFilter);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const { data } = useSelector((state: RootState) => state.posts);
 
@@ -70,26 +76,52 @@ const Blog: React.FC = memo(() => {
   };
 
   useEffect(() => {
+    console.log('Effect is running'); // Log when the effect runs
     getFilterPosts();
+    setIsLoading(false);
   }, [categoryId, sortBy, sortDirection, page, perPage]);
 
   return (
-    <Container as="main" maxW="container.lg" mt="4em" h="100vh">
-      <CategoryPopUp onChangeCategory={onChangeCategory} />
-      <PerPagePopUp onChangePerPage={onChangePerPage} />
-      <FilterPopUp onChangeDirection={onChangeDirection} />
-      <SimpleGrid columns={[1, 2, 4]} row={2} spacing={6}>
-        {data?.data.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </SimpleGrid>
-      <Box>
-        <Pagination
-          pageNumber={page}
-          paginationInfo={paginationInfo}
-          onPageChange={onChangePage}
-        />
-      </Box>
+    <Container
+      as="main"
+      maxW="container.lg"
+      mt={6}
+      h="100vh"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      flexDirection="column"
+    >
+      {isLoading ? (
+        <Spinner emptyColor="gray.200" color="orange.600" size="xl" />
+      ) : (
+        <>
+          <Flex m={4} w="50%">
+            <FilterPopUp
+              onChangeCategory={onChangeCategory}
+              onChangePerPage={onChangePerPage}
+              onChangeDirection={onChangeDirection}
+            />
+          </Flex>
+          <SimpleGrid
+            columns={[1, 2, 4]}
+            row={perPage === 12 ? 3 : 2}
+            spacing={6}
+          >
+            {data?.data.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </SimpleGrid>
+          <Flex my={6} justify={'center'}>
+            <Pagination
+              perPage={perPage}
+              pageNumber={page}
+              paginationInfo={paginationInfo}
+              onPageChange={onChangePage}
+            />
+          </Flex>
+        </>
+      )}
     </Container>
   );
 });

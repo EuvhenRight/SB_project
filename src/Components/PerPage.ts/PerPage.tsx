@@ -19,6 +19,7 @@ const PerPagePopUp: React.FC<PerPageProps> = memo(({ onChangePerPage }) => {
 
   return (
     <Select
+      size="xs"
       placeholder="Per Page"
       onChange={(e) => onChangePerPage(Number(e.target.value))}
     >

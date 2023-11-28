@@ -26,8 +26,12 @@ import { Category, FormValues } from '../../Redux/types';
 import {
   fetchCategoryData,
   fetchNewPostData,
-  fetchUploadImage,
 } from '../../Redux/Posts/PostSlice';
+
+type PropsForm = {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpen: boolean;
+};
 
 const validate = (value: string, fieldName: string) => {
   let error: string | undefined;
@@ -54,7 +58,7 @@ const formFields = [
   { name: 'content', type: 'text', placeholder: 'Content' },
 ];
 
-const PostForm: React.FC = () => {
+const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { colorMode } = useColorMode();
   const data = useSelector((state: RootState) => state.posts.categories);
@@ -84,22 +88,14 @@ const PostForm: React.FC = () => {
     actions: FormikHelpers<FormValues>
   ) => {
     try {
-      // const formData: FormValues = new FormData();
-      // formData.append('title', values.title);
-      // formData.append('content', values.content);
-      // formData.append('category_id', values.category_id);
-      // if (values.image) {
-      //   formData.append('image', values.image, values.image.name);
-      // }
-
       const postPayload: FormValues = {
         title: values.title,
         content: values.content,
         category_id: values.category_id,
         image: values.image,
       };
-      console.log(values.image, 'values.image');
       dispatch(fetchNewPostData(postPayload));
+      setIsOpen(!isOpen);
       console.log('Post created successfully!');
     } catch (error) {
       console.error('Error creating post:', error);
