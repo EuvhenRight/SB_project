@@ -9,6 +9,7 @@ import {
   setCategoryId,
   setPage,
   setPerPage,
+  setSearchPhrase,
   setSortDirection,
 } from '../../Redux/Filter/FilterSlice';
 import FilterPopUp from '../../Components/Filter/Filter';
@@ -17,11 +18,14 @@ import PostContent from '../../Components/PostContent/PostContent';
 
 const Blog: React.FC = memo(() => {
   const dispatch = useAppDispatch();
-  const { sortBy, sortDirection, perPage, page, categoryId } = useSelector(
-    selectFilter
-  );
-  const [isLoading, setIsLoading] = useState(true);
-
+  const {
+    sortBy,
+    sortDirection,
+    perPage,
+    page,
+    categoryId,
+    searchPhrase,
+  } = useSelector(selectFilter);
   const { data } = useSelector((state: RootState) => state.posts);
 
   const onChangePerPage = useCallback((idx: number) => {
@@ -38,6 +42,10 @@ const Blog: React.FC = memo(() => {
 
   const onChangeDirection = useCallback((idx: string) => {
     dispatch(setSortDirection(idx));
+  }, []);
+
+  const onChangeSearchPhrase = useCallback((idx: string) => {
+    dispatch(setSearchPhrase(idx));
   }, []);
 
   const paginationInfo: PaginationInfo = {
@@ -57,7 +65,6 @@ const Blog: React.FC = memo(() => {
   };
 
   const getFilterPosts = async () => {
-    setIsLoading(true);
     dispatch(
       universalPostData({
         sortBy,
@@ -65,14 +72,14 @@ const Blog: React.FC = memo(() => {
         categoryId,
         page,
         perPage,
+        searchPhrase,
       })
     );
-    setIsLoading(false);
   };
 
   useEffect(() => {
     getFilterPosts();
-  }, [categoryId, sortBy, sortDirection, page, perPage]);
+  }, [categoryId, sortBy, sortDirection, page, perPage, searchPhrase]);
 
   return (
     <Container
@@ -82,7 +89,17 @@ const Blog: React.FC = memo(() => {
       height="100dvh"
       boxSizing="border-box"
     >
-      {isLoading ? (
+      <Flex m={4} w="50%">
+        <FilterPopUp
+          onChangeCategory={onChangeCategory}
+          onChangePerPage={onChangePerPage}
+          onChangeDirection={onChangeDirection}
+          onChangeSearchPhrase={onChangeSearchPhrase}
+        />
+      </Flex>
+      {data ? (
+        <PostContent data={data} />
+      ) : (
         <Spinner
           emptyColor="gray.200"
           color="orange.600"
@@ -91,26 +108,15 @@ const Blog: React.FC = memo(() => {
           right="50%"
           top="50%"
         />
-      ) : (
-        <>
-          <Flex m={4} w="50%">
-            <FilterPopUp
-              onChangeCategory={onChangeCategory}
-              onChangePerPage={onChangePerPage}
-              onChangeDirection={onChangeDirection}
-            />
-          </Flex>
-          {data ? <PostContent data={data} /> : null}
-          <Flex my={6} justify={'center'}>
-            <Pagination
-              perPage={perPage}
-              pageNumber={page}
-              paginationInfo={paginationInfo}
-              onPageChange={onChangePage}
-            />
-          </Flex>
-        </>
       )}
+      <Flex my={6} justify={'center'}>
+        <Pagination
+          perPage={perPage}
+          pageNumber={page}
+          paginationInfo={paginationInfo}
+          onPageChange={onChangePage}
+        />
+      </Flex>
     </Container>
   );
 });

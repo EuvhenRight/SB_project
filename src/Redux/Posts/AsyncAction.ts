@@ -8,8 +8,8 @@ import {
 } from '../types';
 import axios, { AxiosError } from 'axios';
 
-const apiKey: string = 'token';
-const apiKeyValue: string = 'pj11daaQRz7zUIH56B9Z';
+const apiKey = process.env.REACT_APP_API_KEY;
+const apiKeyValue = process.env.REACT_APP_API_KEY_VALUE;
 
 export const fetchPostData = createAsyncThunk<PaginationInfo>(
   'get/fetchAllPostData',
@@ -19,7 +19,7 @@ export const fetchPostData = createAsyncThunk<PaginationInfo>(
     try {
       const response = await axios.get<PaginationInfo>(apiUrl, {
         headers: {
-          [apiKey]: apiKeyValue,
+          [apiKey!]: apiKeyValue,
           'Content-Type': 'application/json',
         },
       });
@@ -39,7 +39,7 @@ export const fetchCategoryData = createAsyncThunk<Category[]>(
     try {
       const response = await axios.get<Category[]>(apiUrl, {
         headers: {
-          [apiKey]: apiKeyValue,
+          [apiKey!]: apiKeyValue,
           'Content-Type': 'application/json',
         },
       });
@@ -59,7 +59,7 @@ export const fetchNewPostData = createAsyncThunk<Post, FormValues>(
     try {
       const response = await axios.post<Post>(apiUrl, formValues, {
         headers: {
-          [apiKey]: apiKeyValue,
+          [apiKey!]: apiKeyValue,
           'Content-type': 'multipart/form-data',
         },
       });
@@ -82,7 +82,7 @@ export const fetchUploadImage = createAsyncThunk<Post, string>(
     try {
       const response = await axios.get<Post>(apiUrl, {
         headers: {
-          [apiKey]: apiKeyValue,
+          [apiKey!]: apiKeyValue,
           'Content-Type': 'application/json',
         },
       });

@@ -18,6 +18,7 @@ export interface filterValues {
   categoryId: number;
   sortDirection: string;
   page: number;
+  searchPhrase: string;
 }
 
 export interface filterPostValues {

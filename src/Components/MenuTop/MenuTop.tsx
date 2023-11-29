@@ -97,11 +97,18 @@ const MenuTop: React.FC = memo(() => {
               mr={2}
             />
           </HStack>
-          <Flex justifyContent={'center'}>
-            {location.pathname === '/blog' && (
-              <Heading color="white">Blog</Heading>
-            )}
-          </Flex>
+          {location.pathname === '/blog' && (
+            <>
+              <Heading
+                color="white"
+                position="absolute"
+                left="50%"
+                bottom="30%"
+              >
+                Blog
+              </Heading>
+            </>
+          )}
         </Container>
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>

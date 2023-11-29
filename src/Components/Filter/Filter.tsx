@@ -15,10 +15,16 @@ type FilterProps = {
   onChangeDirection: (idx: string) => void;
   onChangePerPage: (perPage: number) => void;
   onChangeCategory: (idx: number) => void;
+  onChangeSearchPhrase: (searchPhrase: string) => void;
 };
 
 const FilterPopUp: React.FC<FilterProps> = memo(
-  ({ onChangeDirection, onChangePerPage, onChangeCategory }) => {
+  ({
+    onChangeDirection,
+    onChangePerPage,
+    onChangeCategory,
+    onChangeSearchPhrase,
+  }) => {
     const perPageOptions: OptionType[] = [
       { id: 4, name: '4' },
       { id: 8, name: '8' },
@@ -88,7 +94,7 @@ const FilterPopUp: React.FC<FilterProps> = memo(
         <InputGroup
           size="xs"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            console.log(e.target.value)
+            onChangeSearchPhrase(e.target.value)
           }
         >
           <InputLeftElement pointerEvents="none">

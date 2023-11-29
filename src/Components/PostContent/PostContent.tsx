@@ -8,10 +8,10 @@ interface PostContentProps {
 }
 
 const PostContent: React.FC<PostContentProps> = memo(({ data }) => {
-  const isMobile = useBreakpointValue({ base: true, md: true, lg: false });
+  const typeForPost = data?.per_page === '4' ? [1, 2, 2] : [1, 2, 2, 4];
   return (
     <Flex alignItems="center" flexDirection={'column'}>
-      <SimpleGrid columns={isMobile ? [1, 2, 2] : [1, 2, 4]} spacing={6}>
+      <SimpleGrid columns={typeForPost} spacing={6}>
         {data?.data.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

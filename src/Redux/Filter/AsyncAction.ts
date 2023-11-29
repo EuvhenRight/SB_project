@@ -2,19 +2,26 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { PaginationInfo, filterValues } from '../types';
 import axios from 'axios';
 
-const apiKey: string = 'token';
-const apiKeyValue: string = 'pj11daaQRz7zUIH56B9Z';
+const apiKey = process.env.REACT_APP_API_KEY;
+const apiKeyValue = process.env.REACT_APP_API_KEY_VALUE;
 
 export const universalPostData = createAsyncThunk<PaginationInfo, filterValues>(
   'get/fetchAllPostData',
   async (params) => {
-    const { page, perPage, sortBy, sortDirection, categoryId } = params;
-    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=${page}&perPage=${perPage}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchPhrase=&categoryId=${categoryId}`;
+    const {
+      page,
+      perPage,
+      sortBy,
+      sortDirection,
+      categoryId,
+      searchPhrase,
+    } = params;
+    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=${page}&perPage=${perPage}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchPhrase=${searchPhrase}&categoryId=${categoryId}`;
 
     try {
       const response = await axios.get<PaginationInfo>(apiUrl, {
         headers: {
-          [apiKey]: apiKeyValue,
+          [apiKey!]: apiKeyValue,
           'Content-Type': 'application/json',
         },
       });
@@ -34,7 +41,7 @@ export const homePostData = createAsyncThunk<PaginationInfo, number>(
     try {
       const response = await axios.get<PaginationInfo>(apiUrl, {
         headers: {
-          [apiKey]: apiKeyValue,
+          [apiKey!]: apiKeyValue,
           'Content-Type': 'application/json',
         },
       });
