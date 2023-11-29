@@ -1,7 +1,14 @@
-import { Box, Container, Heading, Highlight } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Heading,
+  Highlight,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import React from 'react';
 
 const Welcome: React.FC = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <Container as="main" maxW="container.xl">
       <Box
@@ -21,7 +28,7 @@ const Welcome: React.FC = () => {
           as="h1"
           color="orange.600"
           textShadow="2px 2px 4px rgba(0, 0, 0, 0.5)"
-          fontSize="9xl"
+          fontSize={isMobile ? '3xl' : '9xl'}
         >
           Hi Everyone!
         </Heading>

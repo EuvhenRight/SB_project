@@ -82,13 +82,7 @@ const Blog: React.FC = memo(() => {
   }, [categoryId, sortBy, sortDirection, page, perPage, searchPhrase]);
 
   return (
-    <Container
-      as="main"
-      maxW="container.lg"
-      mt={6}
-      height="100dvh"
-      boxSizing="border-box"
-    >
+    <Container as="main" maxW="container.lg" mt={6} boxSizing="border-box">
       <Flex m={4} w="50%">
         <FilterPopUp
           onChangeCategory={onChangeCategory}
