@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
       display={'flex'}
       justifyContent={'center'}
       bg={'#262626'}
-      mt={16}
+      mt={6}
     >
       <Text color={'white'}>Copyright Social Brothers - 2023</Text>
     </Container>

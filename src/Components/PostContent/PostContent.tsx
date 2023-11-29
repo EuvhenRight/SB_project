@@ -1,22 +1,17 @@
-import {
-  Flex,
-  SimpleGrid,
-  useBreakpointValue,
-} from '@chakra-ui/react';
-import React, { memo, useEffect } from 'react';
-import PostCard from '../Card/Card';
+import { Flex, SimpleGrid, useBreakpointValue } from '@chakra-ui/react';
+import React, { memo } from 'react';
+import PostCard from '../Card/PostCard';
 import { PaginationInfo } from '../../Redux/types';
 
 interface PostContentProps {
-  data: PaginationInfo
+  data: PaginationInfo;
 }
 
-const PostContent: React.FC<PostContentProps> = memo(({data}) => {
-  const isMobile = useBreakpointValue({ base: true, lg: false });
-
+const PostContent: React.FC<PostContentProps> = memo(({ data }) => {
+  const isMobile = useBreakpointValue({ base: true, md: true, lg: false });
   return (
     <Flex alignItems="center" flexDirection={'column'}>
-      <SimpleGrid columns={[1, null, 2]} row={2} spacing={6}>
+      <SimpleGrid columns={isMobile ? [1, 2, 2] : [1, 2, 4]} spacing={6}>
         {data?.data.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

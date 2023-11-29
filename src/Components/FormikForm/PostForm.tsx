@@ -26,7 +26,7 @@ import { Category, FormValues } from '../../Redux/types';
 import {
   fetchCategoryData,
   fetchNewPostData,
-} from '../../Redux/Posts/PostSlice';
+} from '../../Redux/Posts/AsyncAction';
 
 type PropsForm = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -114,7 +114,7 @@ const PostForm: React.FC<PropsForm> = memo(({ setIsOpen, isOpen }) => {
       const file = e.target.files[0];
       try {
         form.setFieldValue('image', file);
-        setImage(file)
+        setImage(file);
       } catch (error) {
         console.error('Error uploading image:', error);
       }
@@ -176,7 +176,7 @@ const PostForm: React.FC<PropsForm> = memo(({ setIsOpen, isOpen }) => {
                         size="sm"
                         ml={6}
                       >
-                        {image ? image.name : "Add Image" }
+                        {image ? image.name : 'Add Image'}
                       </Button>
                       <input
                         ref={inputFileRef}

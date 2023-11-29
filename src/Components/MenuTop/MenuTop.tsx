@@ -41,10 +41,10 @@ const NavLink = (props: Props) => {
   );
 };
 
-const MenuTop:React.FC = memo(() => {
+const MenuTop: React.FC = memo(() => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <>
@@ -53,6 +53,7 @@ const MenuTop:React.FC = memo(() => {
         width="100%"
         bgImage={`${process.env.PUBLIC_URL}/mask.png`}
         bgRepeat="no-repeat"
+        bgSize="cover"
         height="208px"
       >
         <Container maxW={'container.lg'} as="header" alignItems={'center'}>
@@ -75,15 +76,15 @@ const MenuTop:React.FC = memo(() => {
                   {link}
                 </NavLink>
               ))}
-                    <Flex justifyContent="flex-end"> 
-            <Button
-                onClick={toggleColorMode}
-                variant="custom"
-                colorScheme="orange"
-                display={{ base: 'none', md: 'flex' }}
-              >
-                {colorMode === 'dark' ? <MoonIcon /> : <SunIcon />}
-              </Button>
+              <Flex justifyContent="flex-end">
+                <Button
+                  onClick={toggleColorMode}
+                  variant="custom"
+                  colorScheme="orange"
+                  display={{ base: 'none', md: 'flex' }}
+                >
+                  {colorMode === 'dark' ? <MoonIcon /> : <SunIcon />}
+                </Button>
               </Flex>
             </HStack>
             <IconButton
@@ -96,8 +97,10 @@ const MenuTop:React.FC = memo(() => {
               mr={2}
             />
           </HStack>
-          <Flex justifyContent={"center"}>
-          {location.pathname==="/blog" && <Heading>Blog</Heading> }
+          <Flex justifyContent={'center'}>
+            {location.pathname === '/blog' && (
+              <Heading color="white">Blog</Heading>
+            )}
           </Flex>
         </Container>
         {isOpen ? (
@@ -129,6 +132,6 @@ const MenuTop:React.FC = memo(() => {
       </Box>
     </>
   );
-})
+});
 
 export default MenuTop;

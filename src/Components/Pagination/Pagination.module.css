@@ -20,7 +20,17 @@
   color: #fff;
 }
 
-.root li .active {
+.root li.active a {
   background-color: #fe5f1e;
   color: #fff;
+}
+
+.root li.disabled a {
+  cursor: not-allowed;
+  border: 1px solid #717170;
+  color: #717170;
+}
+
+.root li.disabled a:hover {
+  background-color: transparent;
 }

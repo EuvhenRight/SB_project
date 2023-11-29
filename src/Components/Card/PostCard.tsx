@@ -43,7 +43,7 @@ const PostCard: React.FC<Props> = memo((props) => {
       </CardFooter>
       <CardBody sx={styles.body} textOverflow="ellipsis">
         <Stack spacing="1">
-        <Text color={'red'} fontStyle="italic" fontSize={'xs'}>
+          <Text color={'red'} fontStyle="italic" fontSize={'xs'}>
             {isNew ? 'New' : null}
           </Text>
           <Heading

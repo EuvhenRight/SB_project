@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import ReactPaginate from 'react-paginate';
 import { PaginationInfo } from '../../Redux/types';
 
@@ -27,8 +27,8 @@ const Pagination: React.FC<PaginationProps> = memo(
           forcePage={current_page - 2}
           marginPagesDisplayed={1}
           pageRangeDisplayed={1}
-          containerClassName={'pagination'}
-          activeClassName={'active'}
+          activeClassName={styles.active}
+          disabledClassName={styles.disabled}
         />
       </div>
     );

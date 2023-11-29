@@ -1,13 +1,5 @@
-import {
-  Box,
-  Center,
-  Container,
-  Flex,
-  SimpleGrid,
-  Spinner,
-} from '@chakra-ui/react';
+import { Container, Flex, SimpleGrid, Spinner } from '@chakra-ui/react';
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import PostCard from '../../Components/Card/Card';
 import { useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppDispatch } from '../../Redux/store';
 import { PaginationInfo } from '../../Redux/types';
@@ -21,11 +13,13 @@ import {
 } from '../../Redux/Filter/FilterSlice';
 import FilterPopUp from '../../Components/Filter/Filter';
 import Pagination from '../../Components/Pagination/PaginationPrime';
+import PostContent from '../../Components/PostContent/PostContent';
 
 const Blog: React.FC = memo(() => {
   const dispatch = useAppDispatch();
-  const { sortBy, sortDirection, perPage, page, categoryId } =
-    useSelector(selectFilter);
+  const { sortBy, sortDirection, perPage, page, categoryId } = useSelector(
+    selectFilter
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   const { data } = useSelector((state: RootState) => state.posts);
@@ -63,6 +57,7 @@ const Blog: React.FC = memo(() => {
   };
 
   const getFilterPosts = async () => {
+    setIsLoading(true);
     dispatch(
       universalPostData({
         sortBy,
@@ -72,12 +67,11 @@ const Blog: React.FC = memo(() => {
         perPage,
       })
     );
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    console.log('Effect is running'); // Log when the effect runs
     getFilterPosts();
-    setIsLoading(false);
   }, [categoryId, sortBy, sortDirection, page, perPage]);
 
   return (
@@ -85,32 +79,28 @@ const Blog: React.FC = memo(() => {
       as="main"
       maxW="container.lg"
       mt={6}
-      h="100vh"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      flexDirection="column"
+      height="100dvh"
+      boxSizing="border-box"
     >
-           <Flex m={4} w="50%">
+      {isLoading ? (
+        <Spinner
+          emptyColor="gray.200"
+          color="orange.600"
+          size="xl"
+          position="absolute"
+          right="50%"
+          top="50%"
+        />
+      ) : (
+        <>
+          <Flex m={4} w="50%">
             <FilterPopUp
               onChangeCategory={onChangeCategory}
               onChangePerPage={onChangePerPage}
               onChangeDirection={onChangeDirection}
             />
           </Flex>
-      {isLoading ? (
-        <Spinner emptyColor="gray.200" color="orange.600" size="xl" />
-      ) : (
-        <>
-          <SimpleGrid
-            columns={[1, 2, 4]}
-            row={perPage === 12 ? 3 : 2}
-            spacing={6}
-          >
-            {data?.data.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </SimpleGrid>
+          {data ? <PostContent data={data} /> : null}
           <Flex my={6} justify={'center'}>
             <Pagination
               perPage={perPage}
