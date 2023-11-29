@@ -1,4 +1,4 @@
-import { Container, Flex, SimpleGrid, Spinner } from '@chakra-ui/react';
+import { Box, Container, Flex, SimpleGrid, Spinner } from '@chakra-ui/react';
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppDispatch } from '../../Redux/store';
@@ -82,7 +82,17 @@ const Blog: React.FC = memo(() => {
   }, [categoryId, sortBy, sortDirection, page, perPage, searchPhrase]);
 
   return (
-    <Container as="main" maxW="container.lg" mt={6} boxSizing="border-box">
+    <Container
+      as="main"
+      maxW="container.lg"
+      mt={6}
+      boxSizing="border-box"
+      display="flex"
+      justifyContent={'center'}
+      alignItems={'center'}
+      flexDirection={'column'}
+      h="100%"
+    >
       <Flex m={4} w="50%">
         <FilterPopUp
           onChangeCategory={onChangeCategory}
@@ -91,19 +101,14 @@ const Blog: React.FC = memo(() => {
           onChangeSearchPhrase={onChangeSearchPhrase}
         />
       </Flex>
-      {data ? (
-        <PostContent data={data} />
-      ) : (
-        <Spinner
-          emptyColor="gray.200"
-          color="orange.600"
-          size="xl"
-          position="absolute"
-          right="50%"
-          top="50%"
-        />
-      )}
-      <Flex my={6} justify={'center'}>
+      <Box minH="calc(100vh - 4rem)">
+        {data ? (
+          <PostContent data={data} />
+        ) : (
+          <Spinner emptyColor="gray.200" color="orange.600" size="xl" />
+        )}
+      </Box>
+      <Flex my={6} justify={'center'} height="4rem">
         <Pagination
           perPage={perPage}
           pageNumber={page}

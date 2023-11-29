@@ -1,6 +1,6 @@
 import { Flex, SimpleGrid, useBreakpointValue } from '@chakra-ui/react';
 import React, { memo } from 'react';
-import PostCard from '../Card/PostCard';
+import PostCard from '../../Components/Card/Card';
 import { PaginationInfo } from '../../Redux/types';
 
 interface PostContentProps {

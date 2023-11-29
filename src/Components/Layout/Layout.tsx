@@ -9,9 +9,9 @@ const Layout: React.FC = () => {
   return (
     <Box bgColor={colorMode === 'dark' ? 'gray.800' : 'gray.50'}>
       <MenuTop />
-      <div>
+      <Box>
         <Outlet />
-      </div>
+      </Box>
       <Footer />
     </Box>
   );

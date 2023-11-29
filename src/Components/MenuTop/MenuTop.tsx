@@ -99,12 +99,7 @@ const MenuTop: React.FC = memo(() => {
           </HStack>
           {location.pathname === '/blog' && (
             <>
-              <Heading
-                color="white"
-                position="absolute"
-                left="50%"
-                bottom="30%"
-              >
+              <Heading color="white" position="absolute" left="50%">
                 Blog
               </Heading>
             </>
