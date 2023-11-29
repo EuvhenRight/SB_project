@@ -1,23 +1,18 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   Box,
-  Flex,
   Button,
-  Menu,
   useDisclosure,
-  useColorModeValue,
-  Stack,
   useColorMode,
-  MenuList,
-  MenuItem,
   HStack,
   IconButton,
   Image,
   Container,
-  useBreakpointValue,
+  Heading,
+  Flex,
 } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { NavLink as RouterLink, Link } from 'react-router-dom';
+import { NavLink as RouterLink, Link, useLocation } from 'react-router-dom';
 
 interface Props {
   to: string;
@@ -28,7 +23,6 @@ const Links = ['Home', 'Blog'];
 
 const NavLink = (props: Props) => {
   const { to, children } = props;
-
   return (
     <Box
       as={RouterLink}
@@ -47,9 +41,10 @@ const NavLink = (props: Props) => {
   );
 };
 
-const MenuTop = () => {
+const MenuTop:React.FC = memo(() => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const location = useLocation()
 
   return (
     <>
@@ -75,18 +70,21 @@ const MenuTop = () => {
               display={{ base: 'none', md: 'flex' }}
               color={'white'}
             >
-              <Button
-                onClick={toggleColorMode}
-                variant="custom"
-                colorScheme="orange"
-              >
-                {colorMode === 'dark' ? <MoonIcon /> : <SunIcon />}
-              </Button>
               {Links.map((link) => (
                 <NavLink key={link} to={`/${link.toLowerCase()}`}>
                   {link}
                 </NavLink>
               ))}
+                    <Flex justifyContent="flex-end"> 
+            <Button
+                onClick={toggleColorMode}
+                variant="custom"
+                colorScheme="orange"
+                display={{ base: 'none', md: 'flex' }}
+              >
+                {colorMode === 'dark' ? <MoonIcon /> : <SunIcon />}
+              </Button>
+              </Flex>
             </HStack>
             <IconButton
               icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -98,6 +96,9 @@ const MenuTop = () => {
               mr={2}
             />
           </HStack>
+          <Flex justifyContent={"center"}>
+          {location.pathname==="/blog" && <Heading>Blog</Heading> }
+          </Flex>
         </Container>
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
@@ -115,6 +116,7 @@ const MenuTop = () => {
               ))}
               <Button
                 mt={2}
+                mr={2}
                 onClick={toggleColorMode}
                 variant="custom"
                 colorScheme="orange"
@@ -127,6 +129,6 @@ const MenuTop = () => {
       </Box>
     </>
   );
-};
+})
 
 export default MenuTop;

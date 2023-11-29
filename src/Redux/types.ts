@@ -1,10 +1,3 @@
-export enum SortPropertyEnum {
-  TITLE_DESC = 'title',
-  TITLE_ASC = '-title',
-  RATING_DESC = 'rating',
-  RATING_ASC = '-rating',
-}
-
 export interface FormValues {
   title: string;
   content: string;
@@ -19,15 +12,16 @@ export interface Category {
   updated_at: string | null;
 }
 
-export type Sort = {
-  sortProperty: SortPropertyEnum;
-};
-
 export interface filterValues {
   perPage: number;
   sortBy: string;
   categoryId: number;
   sortDirection: string;
+  page: number;
+}
+
+export interface filterPostValues {
+  perPage: number;
   page: number;
 }
 

@@ -1,57 +1,34 @@
 import {
-  Box,
   Heading,
   Text,
   Stack,
-  Image,
-  HStack,
   Card,
   CardBody,
   CardFooter,
   useMultiStyleConfig,
   Flex,
 } from '@chakra-ui/react';
-import { connected } from 'process';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchPostData, fetchUploadImage } from '../../Redux/Posts/PostSlice';
-import { AppDispatch } from '../../Redux/store';
 import { Post } from '../../Redux/types';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, differenceInHours } from 'date-fns';
+import { memo } from 'react';
 
 interface Props {
   post: Post;
 }
 
-const PostCard: React.FC<Props> = (props) => {
+const PostCard: React.FC<Props> = memo((props) => {
   const { post } = props;
   const styles = useMultiStyleConfig('Card', { size: 'md', variant: 'custom' });
 
   const timestamp = parseISO(post.created_at);
   const formattedDate = format(timestamp, 'dd-MM-yyyy');
-
-  // const dispatch = useDispatch<AppDispatch>();
-
-  // useEffect(() => {
-  //   const current_image = post.img_url;
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const imageUrl = await dispatch(fetchUploadImage(current_image));
-  //       console.log(imageUrl);
-  //     } catch (error) {
-  //       console.error('Error fetching image:', error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [dispatch, post.img_url]);
+  const isNew = differenceInHours(new Date(), timestamp) < 12;
 
   return (
     <Card sx={styles.container}>
       <CardFooter
         sx={styles.footer}
-        bgImage={post.img_url}
+        bgImage={`${process.env.PUBLIC_URL}/backgroundPost.png`}
         bgPosition="center"
         bgRepeat="no-repeat"
       >
@@ -66,6 +43,9 @@ const PostCard: React.FC<Props> = (props) => {
       </CardFooter>
       <CardBody sx={styles.body} textOverflow="ellipsis">
         <Stack spacing="1">
+        <Text color={'red'} fontStyle="italic" fontSize={'xs'}>
+            {isNew ? 'New' : null}
+          </Text>
           <Heading
             fontSize={'24px'}
             fontWeight="bold"
@@ -81,6 +61,6 @@ const PostCard: React.FC<Props> = (props) => {
       </CardBody>
     </Card>
   );
-};
+});
 
 export default PostCard;

@@ -1,6 +1,7 @@
-import { Select } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
+import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
 import React, { memo, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fetchCategoryData } from '../../Redux/Posts/PostSlice';
 import { RootState, useAppDispatch } from '../../Redux/store';
 import { Category } from '../../Redux/types';
@@ -72,7 +73,8 @@ const FilterPopUp: React.FC<FilterProps> = memo(
             </option>
           ))}
         </Select>
-        <Select
+        <Select  
+          mr={2}
           size="xs"
           placeholder="Category"
           onChange={(e) => onChangeCategory(Number(e.target.value))}
@@ -83,6 +85,12 @@ const FilterPopUp: React.FC<FilterProps> = memo(
             </option>
           ))}
         </Select>
+        <InputGroup size="xs" onChange={(e: React.ChangeEvent<HTMLInputElement>) => console.log(e.target.value)}>
+          <InputLeftElement pointerEvents='none'>
+          <SearchIcon color='gray.300' />
+          </InputLeftElement>
+        <Input type='text' placeholder='Search' />
+        </InputGroup>
       </>
     );
   }

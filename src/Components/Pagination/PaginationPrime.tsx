@@ -22,7 +22,7 @@ const Pagination: React.FC<PaginationProps> = memo(
           breakLabel="..."
           nextLabel=">"
           previousLabel="<"
-          onPageChange={(event) => onPageChange(event.selected + 1)}
+          onPageChange={(event) => onPageChange(event.selected + 2)}
           pageCount={total}
           forcePage={current_page - 2}
           marginPagesDisplayed={1}

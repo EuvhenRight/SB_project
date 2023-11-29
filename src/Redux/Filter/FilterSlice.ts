@@ -1,12 +1,12 @@
 import { RootState } from './../store';
-import { SortPropertyEnum, Sort, filterValues } from '../types';
+import { filterValues } from '../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: filterValues = {
   page: 1,
-  perPage: 4, // Corrected property name
+  perPage: 4, 
   sortDirection: 'asc',
-  categoryId: 1, // Corrected property name
+  categoryId: 1, 
   sortBy: 'title',
 };
 

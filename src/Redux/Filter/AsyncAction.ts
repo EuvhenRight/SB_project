@@ -25,3 +25,23 @@ export const universalPostData = createAsyncThunk<PaginationInfo, filterValues>(
     }
   }
 );
+
+export const homePostData = createAsyncThunk<PaginationInfo, number>(
+  'get/fetchAllPostData',
+  async (page) => {
+    const apiUrl = `https://frontend-case-api.sbdev.nl/api/posts?page=${page}&perPage=4&sortDirection=desc`;
+
+    try {
+      const response = await axios.get<PaginationInfo>(apiUrl, {
+        headers: {
+          [apiKey]: apiKeyValue,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);

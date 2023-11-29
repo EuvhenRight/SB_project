@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../Redux/store';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
 import { MdOutlinePhotoCamera } from 'react-icons/md';
 import { Category, FormValues } from '../../Redux/types';
 import {
@@ -58,11 +58,12 @@ const formFields = [
   { name: 'content', type: 'text', placeholder: 'Content' },
 ];
 
-const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
+const PostForm: React.FC<PropsForm> = memo(({ setIsOpen, isOpen }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { colorMode } = useColorMode();
   const data = useSelector((state: RootState) => state.posts.categories);
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,7 +96,7 @@ const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
         image: values.image,
       };
       dispatch(fetchNewPostData(postPayload));
-      setIsOpen(!isOpen);
+      setIsOpen(true);
       console.log('Post created successfully!');
     } catch (error) {
       console.error('Error creating post:', error);
@@ -113,7 +114,7 @@ const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
       const file = e.target.files[0];
       try {
         form.setFieldValue('image', file);
-        console.log(file, 'file');
+        setImage(file)
       } catch (error) {
         console.error('Error uploading image:', error);
       }
@@ -126,6 +127,7 @@ const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
         <Form>
           {formFields.map((fieldConfig) => (
             <Field
+              background={colorMode === 'dark' ? 'gray.800' : 'white'}
               key={fieldConfig.name}
               name={fieldConfig.name}
               validate={(value: string) => validate(value, fieldConfig.name)}
@@ -142,12 +144,13 @@ const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
                   </FormLabel>
                   {fieldConfig.name === 'title' ? (
                     <Input
-                      colorScheme="orange"
+                      background={colorMode === 'dark' ? 'gray.800' : 'white'}
                       {...field}
                       placeholder={fieldConfig.placeholder}
                     />
                   ) : fieldConfig.name === 'category_id' ? (
                     <Select
+                      background={colorMode === 'dark' ? 'gray.800' : 'white'}
                       placeholder="Category"
                       onChange={(e) => {
                         form.setFieldValue('category_id', e.target.value);
@@ -173,7 +176,7 @@ const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
                         size="sm"
                         ml={6}
                       >
-                        Add Image
+                        {image ? image.name : "Add Image" }
                       </Button>
                       <input
                         ref={inputFileRef}
@@ -185,6 +188,7 @@ const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
                   ) : fieldConfig.name === 'content' ? (
                     <Textarea
                       {...field}
+                      background={colorMode === 'dark' ? 'gray.800' : 'white'}
                       placeholder={fieldConfig.placeholder}
                       resize="none"
                       height="215px"
@@ -215,6 +219,6 @@ const PostForm: React.FC<PropsForm> = ({ setIsOpen, isOpen }) => {
       )}
     </Formik>
   );
-};
+});
 
 export default PostForm;

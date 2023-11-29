@@ -6,11 +6,10 @@ import {
   SimpleGrid,
   Spinner,
 } from '@chakra-ui/react';
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import PostCard from '../../Components/Card/Card';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppDispatch } from '../../Redux/store';
-import { fetchPostData } from '../../Redux/Posts/PostSlice';
 import { PaginationInfo } from '../../Redux/types';
 import { universalPostData } from '../../Redux/Filter/AsyncAction';
 import {
@@ -27,7 +26,7 @@ const Blog: React.FC = memo(() => {
   const dispatch = useAppDispatch();
   const { sortBy, sortDirection, perPage, page, categoryId } =
     useSelector(selectFilter);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data } = useSelector((state: RootState) => state.posts);
 
@@ -92,17 +91,17 @@ const Blog: React.FC = memo(() => {
       alignItems="center"
       flexDirection="column"
     >
-      {isLoading ? (
-        <Spinner emptyColor="gray.200" color="orange.600" size="xl" />
-      ) : (
-        <>
-          <Flex m={4} w="50%">
+           <Flex m={4} w="50%">
             <FilterPopUp
               onChangeCategory={onChangeCategory}
               onChangePerPage={onChangePerPage}
               onChangeDirection={onChangeDirection}
             />
           </Flex>
+      {isLoading ? (
+        <Spinner emptyColor="gray.200" color="orange.600" size="xl" />
+      ) : (
+        <>
           <SimpleGrid
             columns={[1, 2, 4]}
             row={perPage === 12 ? 3 : 2}
