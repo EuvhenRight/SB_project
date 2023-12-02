@@ -1,4 +1,11 @@
-import { Box, Container, Flex, SimpleGrid, Spinner } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Flex,
+  SimpleGrid,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppDispatch } from '../../Redux/store';
@@ -46,6 +53,7 @@ const Blog: React.FC = memo(() => {
 
   const onChangeSearchPhrase = useCallback((idx: string) => {
     dispatch(setSearchPhrase(idx));
+    console.log(idx);
   }, []);
 
   const paginationInfo: PaginationInfo = {
@@ -81,6 +89,8 @@ const Blog: React.FC = memo(() => {
     getFilterPosts();
   }, [categoryId, sortBy, sortDirection, page, perPage, searchPhrase]);
 
+  console.log(data, 'data');
+
   return (
     <Container
       as="main"
@@ -107,7 +117,7 @@ const Blog: React.FC = memo(() => {
         justifyContent={'center'}
         flexDirection={'column'}
       >
-        {data ? (
+        {data && data?.data.length > 0 ? (
           <>
             <PostContent data={data} />
             <Flex my={6} justify={'center'} height="4rem">
@@ -119,6 +129,8 @@ const Blog: React.FC = memo(() => {
               />
             </Flex>
           </>
+        ) : data && data?.data.length === 0 ? (
+          <Text>No posts found :(</Text>
         ) : (
           <Spinner emptyColor="gray.200" color="orange.600" size="xl" />
         )}
