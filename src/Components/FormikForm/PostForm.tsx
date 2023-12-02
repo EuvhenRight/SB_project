@@ -45,6 +45,9 @@ const validate = (value: string, fieldName: string) => {
     case 'content':
       error = value.trim() ? undefined : 'Content is required';
       break;
+    case 'image':
+      error = value ? undefined : 'Image is required';
+      break;
     default:
       break;
   }
