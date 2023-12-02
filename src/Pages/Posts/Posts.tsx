@@ -24,22 +24,24 @@ const Posts: React.FC = memo(() => {
   const { data } = useSelector((state: RootState) => state.posts);
   const [page, setPage] = useState(1);
 
-  const onChangePage = useCallback((newPage: number) => {
-    dispatch(homePostData(newPage));
-    setPage(newPage);
-  }, []);
+  const onChangePage = useCallback(
+    async (page: number) => {
+      console.log('page', page);
+      setPage(page);
 
-  const handleNewPost = async () => {
-    await dispatch(homePostData(1));
-  };
+      if (isOpen) {
+        setPage(1);
+        await dispatch(homePostData(page));
+      } else {
+        await dispatch(homePostData(page));
+      }
+    },
+    [dispatch, isOpen]
+  );
 
   useEffect(() => {
-    if (isOpen) {
-      handleNewPost();
-    } else {
-      onChangePage(page);
-    }
-  }, [isOpen, page, onChangePage]);
+    onChangePage(page);
+  }, [page, onChangePage]);
 
   return (
     <Container as="main" maxW="container.lg" my={16}>
@@ -111,6 +113,7 @@ const Posts: React.FC = memo(() => {
             variant="custom"
             borderRadius="3xl"
             onClick={() => onChangePage(page + 1)}
+            isDisabled={isOpen ? true : false}
           >
             Load more
           </Button>
