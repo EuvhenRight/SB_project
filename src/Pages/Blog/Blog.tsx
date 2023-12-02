@@ -101,21 +101,28 @@ const Blog: React.FC = memo(() => {
           onChangeSearchPhrase={onChangeSearchPhrase}
         />
       </Flex>
-      <Box minH="calc(100vh - 4rem)">
+      <Box
+        minH="calc(100vh - 4rem)"
+        display={'flex'}
+        justifyContent={'center'}
+        flexDirection={'column'}
+      >
         {data ? (
-          <PostContent data={data} />
+          <>
+            <PostContent data={data} />
+            <Flex my={6} justify={'center'} height="4rem">
+              <Pagination
+                perPage={perPage}
+                pageNumber={page}
+                paginationInfo={paginationInfo}
+                onPageChange={onChangePage}
+              />
+            </Flex>
+          </>
         ) : (
           <Spinner emptyColor="gray.200" color="orange.600" size="xl" />
         )}
       </Box>
-      <Flex my={6} justify={'center'} height="4rem">
-        <Pagination
-          perPage={perPage}
-          pageNumber={page}
-          paginationInfo={paginationInfo}
-          onPageChange={onChangePage}
-        />
-      </Flex>
     </Container>
   );
 });
